@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.layuimanagesystem.emp.mapper.EmpMapper">
+
+    <resultMap id="empMap" type="com.example.layuimanagesystem.emp.entity.Emp">
+        <id column="emp_id" property="empId"/>
+        <result column="name" property="name"/>
+        <result column="sex" property="sex"/>
+        <result column="age" property="age"/>
+        <result column="sal" property="sal"/>
+        <result column="birthday" property="birthday"/>
+        <result column="address" property="address"/>
+        <result column="dept_id" property="deptId"/>
+        <association property="dept" column="{deptId=dept_id}"
+                     select="com.example.layuimanagesystem.emp.mapper.DeptMapper.getDept"/>
+    </resultMap>
+
+<!--    添加emp-->
+    <insert id="addEmp">
+        insert into emp(emp_id,name,sex,age,sal,birthday,address,dept_id)
+        values (null,#{name},#{sex},#{age},#{sal},#{birthday},#{address},#{deptId})
+    </insert>
+
+<!--    删除用户-->
+<!--    <delete id="deleteEmpByIds">-->
+<!--        delete from emp where emp_id in (${ids})-->
+<!--    </delete>-->
+    <update id="deleteEmpByIds">
+        update emp set `delete` = 1 where emp_id in (${ids})
+    </update>
+    <update id="updateEmp">
+        update emp
+        set
+            `name` = #{name},
+            sex = #{sex},
+            age = #{age},
+            sal = #{sal},
+            birthday = #{birthday},
+            address = #{address},
+            dept_id = #{deptId}
+        where emp_id = #{empId};
+    </update>
+
+    <!--    获得列表-->
+    <select id="getEmpList" resultMap="empMap">
+        select * from emp
+        <include refid="getEmpListWhere"></include>
+        limit #{start},#{limit}
+    </select>
+
+    <!--    统计数量-->
+    <select id="countEmpList" resultType="java.lang.Long">
+        select count(1) from emp
+        <include refid="getEmpListWhere"></include>
+    </select>
+
+    <select id="getEmpById" resultType="com.example.layuimanagesystem.emp.entity.Emp">
+        select * from emp where emp_id = #{id}
+    </select>
+
+    <sql id="getEmpListWhere">
+        <where>
+            `delete` = 0
+            <if test="name != null">
+                and name like  '%' #{name} '%'
+            </if>
+            <if test="startDate != null">
+                and <![CDATA[ birthday >= #{startDate} ]]>
+            </if>
+            <if test="endDate != null">
+                and <![CDATA[ birthday <= #{endDate} ]]>
+            </if>
+        </where>
+    </sql>
+</mapper>

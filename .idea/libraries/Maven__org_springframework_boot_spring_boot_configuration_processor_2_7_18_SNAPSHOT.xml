@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.springframework.boot:spring-boot-configuration-processor:2.7.18-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../../Maven/maven-repository/org/springframework/boot/spring-boot-configuration-processor/2.7.18-SNAPSHOT/spring-boot-configuration-processor-2.7.18-20231116.162539-45.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/../../../Maven/maven-repository/org/springframework/boot/spring-boot-configuration-processor/2.7.18-SNAPSHOT/spring-boot-configuration-processor-2.7.18-20231116.162539-45-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../../../Maven/maven-repository/org/springframework/boot/spring-boot-configuration-processor/2.7.18-SNAPSHOT/spring-boot-configuration-processor-2.7.18-20231116.162539-45-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
