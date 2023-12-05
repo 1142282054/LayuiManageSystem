@@ -12,7 +12,7 @@
 <body>
 <div class="layuimini-container">
     <div class="layuimini-main">
-
+<!--    搜索框-->
         <fieldset class="table-search-fieldset">
             <legend>搜索信息</legend>
             <div style="margin: 10px 10px 10px 10px">
@@ -46,21 +46,20 @@
                 </form>
             </div>
         </fieldset>
-
+<!--    toolbar-->
         <script type="text/html" id="toolbarDemo">
             <div class="layui-btn-container">
                 <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添加 </button>
                 <button id="delete-ids-btn" class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"> 删除 </button>
             </div>
         </script>
-
+<!--    table渲染-->
         <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
-
+<!--    工具栏-->
         <script type="text/html" id="currentTableBar">
             <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
             <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
         </script>
-
     </div>
 </div>
 
@@ -81,26 +80,36 @@
     const baseUrl = /*[[@{/}]]*/ '';
     /*]]>*/
 
+    /**
+     * 刷新表单与表格
+     */
     function refreshTable(){
         $("#btn-reset").click();
         $("#btn-search").click();
     }
 
+    /**
+     * 使用layui框架
+     */
     layui.use(['form', 'table'], function () {
         var $ = layui.jquery,
             form = layui.form,
             table = layui.table;
         var laydate = layui.laydate;
 
-
+        /**
+         * 使用laydate渲染搜索的开始与结束时间
+         */
         laydate.render({
             elem: '#ID-laydate-start-date'
         });
-
         laydate.render({
             elem: '#ID-laydate-end-date'
         });
 
+        /**
+         * 渲染table表格
+         */
         table.render({
             elem: '#currentTableId',
             url: baseUrl + 'emp/list',
@@ -132,7 +141,12 @@
             skin: 'grid'
         });
 
-        // 监听搜索操作
+        /**
+         * 搜索框的提交
+         * 1.从data中获取数据
+         * 2.使用reload进行数据重载来刷新表单
+         *  --相当于 xxxxxx?curr=x&name=x
+         */
         form.on('submit(data-search-btn)', function (data) {
             //包含表单元素、提交数据、类相关信息
             // console.log(data)
@@ -152,8 +166,14 @@
 
         /**
          * toolbar监听事件
+         * 1.根据参数的事件名称来判断
+         * 2.执行相应事件的方法
          */
         table.on('toolbar(currentTableFilter)', function (obj) {
+            /**
+             * 添加操作
+             * 使用layer打开添加页面
+             */
             if (obj.event === 'add') {  // 监听添加操作
                 var index = layer.open({
                     title: '添加用户',
@@ -168,6 +188,15 @@
                 $(window).on("resize", function () {
                     layer.full(index);
                 });
+                /**
+                 * 批量删除操作
+                 * 1.根据table的checkStatus获取哪些行是被选中的
+                 * 2.确认是否删除
+                 *     确认:
+                 *          处理选中行的data数据并把id评拼接成字符串
+                 *          发送post请求
+                 *          刷新表格
+                 */
             } else if (obj.event === 'delete') {  // 监听删除操作
                 var checkStatus = table.checkStatus('currentTableId')
                     , data = checkStatus.data;
@@ -210,8 +239,19 @@
             console.log(obj)
         });
 
+        /**
+         * table的工具栏事件
+         * 1.根据事件名判断
+         * 2.执行响应方法
+         */
         table.on('tool(currentTableFilter)', function (obj) {
             var data = obj.data;
+            /**
+             * 编辑操作
+             * 1.获取编辑行的数据
+             * 2.使用layer打开编辑页面
+             *  注意:要把emp的id放松到后端进行数据回显
+             */
             if (obj.event === 'edit') {
 
                 var index = layer.open({
@@ -228,6 +268,15 @@
                     layer.full(index);
                 });
                 return false;
+                /**
+                 * 删除操作
+                 * 1.禁用删除按钮,防止多次点击
+                 * 2.使用layer确认是否删除
+                 *  -处理url:XXX/empID 使用Resful风格,
+                 *  -DELETE请求:post发送的数据中添加_method="DELETE"
+                 *  -刷新表格
+                 * 3.解除禁用
+                 */
             } else if (obj.event === 'delete') {
                 layer.confirm('确认删除 ' + data.name + " 吗？", function (index) {
                     // console.log(obj)

@@ -9,6 +9,6 @@ import java.io.Serializable;
  * @version 1.0
  */@Data
 public class Dept implements Serializable {
-    private Integer deptId;
-    private String deptName;
+    private Integer deptId;     //部门id
+    private String deptName;    //部门名称
 }

@@ -12,15 +12,15 @@ import java.util.Date;
  */
 @Data
 public class Emp implements Serializable {
-    private Integer empId;
-    private String name;
-    private String sex;
-    private Integer age;
-    private Double sal;
+    private Integer empId;  //员工id
+    private String name;    //员工名字
+    private String sex;     //性别
+    private Integer age;    //年龄
+    private Double sal;     //薪资
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date birthday;
-    private String address;
-    private Integer deptId;
+    private Date birthday;  //生日
+    private String address; //地址
+    private Integer deptId; //部门id(外键)
 
-    private Dept dept;
+    private Dept dept;      //部门信息
 }

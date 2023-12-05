@@ -12,6 +12,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @ControllerAdvice
 public class GlobalException {
 
+    /**
+     * 全局异常处理
+     * @param e 异常
+     * @return 错误信息的json
+     */
     @ResponseBody
     @ExceptionHandler(Exception.class)
     public Result globalHandler(Exception e){

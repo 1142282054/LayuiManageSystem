@@ -33,6 +33,7 @@
 <div class="layui-container">
     <div class="admin-login-background">
         <div class="layui-form login-form">
+<!--            登录信息表单，包含账号、密码以及验证码-->
             <form class="layui-form" action="">
                 <div class="layui-form-item logo-title">
                     <h1>后台登录</h1>
@@ -68,14 +69,21 @@
 <script th:src="@{layuimini/lib/jq-module/jquery.particleground.min.js}" charset="utf-8"></script>
 
 <script type="text/javascript" th:inline="javascript">
+
     /*<![CDATA[*/
     const baseUrl = /*[[@{/}]]*/ '';
     /*]]>*/
 
+    /**
+     * 二维码刷新
+     */
     $("#captchaPic").click(function (){
         $("#captchaPic").attr("src",baseUrl + 'captcha?date=' + new Date().getTime())
     })
 
+    /**
+     * 使用layUI框架
+     */
     layui.use(['form'], function () {
         var form = layui.form,
             layer = layui.layer;
@@ -91,9 +99,15 @@
             });
         });
 
-        // 进行登录操作
+        /**
+         * 登录操作
+         * 1.把登录按钮置位禁用状态,防止多次提交
+         * 2.进行登录数据的验证
+         * 3.发送登录请求
+         *  -成功,跳转页面
+         *  -失败,layer打印失败信息,并解除登录按钮禁用状态
+         */
         form.on('submit(login)', function (data) {
-
             $("#btn-login").attr("disabled","disabled").addClass("layui-btn-disabled")
 
             data = data.field;

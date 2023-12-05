@@ -10,6 +10,12 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class CaptchaController {
 
+    /**
+     * 获取验证码
+     * @param request
+     * @param response
+     * @throws Exception
+     */
     @RequestMapping("/captcha")
     public void captcha(HttpServletRequest request, HttpServletResponse response) throws Exception {
         CaptchaUtil.out(request, response);

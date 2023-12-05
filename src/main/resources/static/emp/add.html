@@ -67,8 +67,6 @@
             </select>
         </div>
     </div>
-
-
     <div class="layui-form-item">
         <div class="layui-input-block">
             <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn" id="saveBtn">确认添加</button>
@@ -81,6 +79,10 @@
     /*<![CDATA[*/
     const baseUrl = /*[[@{/}]]*/ '';
     /*]]>*/
+
+    /**
+     * 使用layui框架
+     */
     layui.use(['form','laydate'], function () {
         var form = layui.form,
             layer = layui.layer;

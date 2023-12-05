@@ -28,11 +28,53 @@ public class EmpController {
     @Resource
     DeptService deptService;
 
+//页面跳转
+
     @GetMapping("/table")
     public String table(){
         return "emp/table";
     }
 
+    /**
+     * 获取添加emp页面
+     * 1.获取所有部门的信息
+     * 2.把部门信息存储到session用于部门信息的数据回显
+     * 3.跳转页面
+     * @param session
+     * @return
+     */
+    @GetMapping("/add/ui")
+    public String addEmpPage(HttpSession session){
+        List<Dept> deptList = deptService.getAllDept();
+        session.setAttribute("deptList",deptList);
+        return "emp/add";
+    }
+
+    /**
+     * 获取更新页面
+     * 1.根据id值查询emp的信息
+     * 2.把emp信息存储到model域,用于数据回显
+     * 3.跳转页面
+     * @param id 要更新emp的id
+     * @param model
+     * @return
+     */
+    @GetMapping("/{id}")
+    public String updateEmpPage(@PathVariable("id") Integer id, Model model){
+        Emp emp = empService.getEmpById(id);
+        List<Dept> deptList = deptService.getAllDept();
+        model.addAttribute("empInfo",emp);
+        model.addAttribute("deptList",deptList);
+        return "emp/edit";
+    }
+
+//Resful风格,对emp的各种操作
+
+    /**
+     * 根据查询条件获取empList信息
+     * @param parm 分页与限制条件
+     * @return 查询信息
+     */
     @ResponseBody
     @GetMapping("/list")
     public Result<Object> getEmpList(EmpQuery parm){
@@ -41,15 +83,11 @@ public class EmpController {
         return Result.successful(list,count);
     }
 
-    @GetMapping("/add/ui")
-    public String addEmpPage(HttpSession session){
-        List<Dept> deptList = deptService.getAllDept();
-        session.setAttribute("deptList",deptList);
-        return "emp/add";
-    }
-
-//    resful风格
-
+    /**
+     * 对emp的添加操作
+     * @param emp emp信息
+     * @return 添加确认信息，code=1成功，code=0失败
+     */
     @ResponseBody
     @PostMapping("/addEmp")
     public Result<Object> addEmp(Emp emp){
@@ -61,6 +99,11 @@ public class EmpController {
         return Result.fail();
     }
 
+    /**
+     * 对emp的删除操作
+     * @param ids 删除的emp的id字符串 例:1,2,3
+     * @return 删除确认信息
+     */
     @ResponseBody
     @DeleteMapping("/{ids}")
     public Result<Object> deleteEmpByIds(@PathVariable("ids") String ids){
@@ -71,15 +114,13 @@ public class EmpController {
         return Result.fail();
     }
 
-    @GetMapping("/{id}")
-    public String updateEmpPage(@PathVariable("id") Integer id, Model model){
-        Emp emp = empService.getEmpById(id);
-        List<Dept> deptList = deptService.getAllDept();
-        model.addAttribute("empInfo",emp);
-        model.addAttribute("deptList",deptList);
-        return "emp/edit";
-    }
 
+
+    /**
+     *
+     * @param emp
+     * @return
+     */
     @ResponseBody
     @PutMapping("")
     public Result updateEmp(Emp emp){

@@ -15,6 +15,10 @@ public class NotFountController implements ErrorController {
 //        return "/error";
 //    }
 
+    /**
+     * 异常控制器
+     * @return 404页面
+     */
     @RequestMapping("/error")
     public String error404(){
         return "error/404";

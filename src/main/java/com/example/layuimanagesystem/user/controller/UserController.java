@@ -22,6 +22,18 @@ public class UserController {
     @Resource
     UserService userService;
 
+    /**
+     * 登录验证
+     * 1、先进行验证码验证
+     * 2、从数据库中查找该用户信息并验证（service方法）
+     *  -有，把用户信息存到session域，userInfo，并返回成功信息
+     *  -没有，返回失败信息
+     * @param parm 登录的用户信息
+     * @param verCode 验证码信息
+     * @param request
+     * @param session
+     * @return 验证信息，成功code=1，失败code=0
+     */
     @RequestMapping("/login")
     public Result login(User parm, @RequestParam("captcha") String verCode, HttpServletRequest request, HttpSession session){
 
